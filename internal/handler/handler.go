@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"log/slog"
-	"net/http"
 )
 
 type Handler struct {
@@ -19,11 +18,14 @@ func (h *Handler) InitRoutes() *gin.Engine {
 
 	router.Use(gin.Logger(), gin.Recovery())
 
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "lolkek")
-	})
+	router.GET("/image/:imageName", imageHandler)
 
 	//TODO: implement other  endpoints
 
 	return router
+}
+
+func imageHandler(c *gin.Context) {
+	imageName := c.Param("imageName")
+	c.File("./storage/image/" + imageName)
 }

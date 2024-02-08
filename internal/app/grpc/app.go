@@ -3,6 +3,7 @@ package grpcapp
 import (
 	"fmt"
 	imageSvr "github.com/ARUMANDESU/uniclubs-filestorage-service/internal/grpc/image"
+	"github.com/ARUMANDESU/uniclubs-filestorage-service/internal/services/image"
 	"google.golang.org/grpc"
 	"log/slog"
 	"net"
@@ -14,10 +15,9 @@ type App struct {
 	port       int
 }
 
-func New(log *slog.Logger, port int) *App {
+func New(log *slog.Logger, port int, imageService *image.Service) *App {
 	gRPCServer := grpc.NewServer()
-
-	imageSvr.Register(gRPCServer)
+	imageSvr.Register(gRPCServer, imageService)
 
 	return &App{
 		log:        log,
